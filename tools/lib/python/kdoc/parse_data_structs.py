@@ -157,6 +157,7 @@ class ParseDataStructs:
         self.namespace = None
         self.ignore = []
         self.replace = []
+        self.exceptions_name = None
 
         for symbol_type in self.DEF_SYMBOL_TYPES:
             self.symbols[symbol_type] = {}
@@ -170,6 +171,7 @@ class ParseDataStructs:
             return
 
         name = os.path.basename(fname)
+        self.exceptions_name = name
 
         with open(fname, "r", encoding="utf-8", errors="backslashreplace") as f:
             for ln, line in enumerate(f):
@@ -207,7 +209,7 @@ class ParseDataStructs:
         # Handle ignore rules
         for ln, c_type, symbol in self.ignore:
             if c_type not in self.DEF_SYMBOL_TYPES:
-                sys.exit(f"{name}:{ln}: {c_type} is invalid")
+                sys.exit(f"{self.exceptions_name}:{ln}: {c_type} is invalid")
 
             d = self.symbols[c_type]
             if symbol in d:
@@ -216,7 +218,7 @@ class ParseDataStructs:
         # Handle replace rules
         for ln, c_type, old, new in self.replace:
             if c_type not in self.DEF_SYMBOL_TYPES:
-                sys.exit(f"{name}:{ln}: {c_type} is invalid")
+                sys.exit(f"{self.exceptions_name}:{ln}: {c_type} is invalid")
 
             reftype = None
 
@@ -245,7 +247,7 @@ class ParseDataStructs:
                 (_, ln) = self.symbols[c_type][old]
                 self.symbols[c_type][old] = (new_ref, ln)
             else:
-                print(f"{name}:{ln}: Warning: can't find {old} {c_type}")
+                print(f"{self.exceptions_name}:{ln}: Warning: can't find {old} {c_type}")
 
     def store_type(self, ln, symbol_type: str, symbol: str,
                    ref_name: str = None, replace_underscores: bool = True):
