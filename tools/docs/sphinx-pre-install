@@ -1435,7 +1435,7 @@ class SphinxDependencyChecker(MissingCheckers):
         virtualenv_cmd = None
 
         if sys.version_info < MIN_PYTHON_VERSION:
-            min_ver = ver_str(MIN_PYTHON_VERSION)
+            min_ver = PythonVersion.ver_str(MIN_PYTHON_VERSION)
             print(f"ERROR: at least python {min_ver} is required to build the kernel docs")
             self.need_sphinx = 1
 
