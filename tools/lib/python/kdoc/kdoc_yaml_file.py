@@ -3,6 +3,7 @@
 # Copyright(c) 2026: Mauro Carvalho Chehab <mchehab@kernel.org>.
 
 import os
+import sys
 
 from kdoc.kdoc_output import ManFormat, RestFormat
 
